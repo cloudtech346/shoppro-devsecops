@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shoppro-deployment
+  namespace: default
+  labels:
+    app: shoppro-online
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shoppro-online
+  template:
+    metadata:
+      labels:
+        app: shoppro-online
+    spec:
+      serviceAccountName: shoppro-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+      - name: shoppro-app
+        image: __IMAGE__
+        ports:
+        - containerPort: 3000
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shoppro-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: shoppro-online
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
