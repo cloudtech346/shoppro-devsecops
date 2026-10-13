@@ -1,0 +1,12 @@
+{
+  "name": "shoppro-online",
+  "version": "1.0.0",
+  "description": "DevSecOps E-commerce microservice sample",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.18.2"
+  }
+}
